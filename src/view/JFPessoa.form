@@ -405,6 +405,7 @@
           </Properties>
           <Events>
             <EventHandler event="ancestorAdded" listener="javax.swing.event.AncestorListener" parameters="javax.swing.event.AncestorEvent" handler="jftfCPFAncestorAdded"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jftfCPFKeyTyped"/>
           </Events>
         </Component>
       </SubComponents>

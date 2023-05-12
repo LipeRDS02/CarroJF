@@ -236,12 +236,17 @@ public class JFPessoa extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         jftfCPF.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 jftfCPFAncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        jftfCPF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jftfCPFKeyTyped(evt);
             }
         });
 
@@ -437,11 +442,15 @@ public class JFPessoa extends javax.swing.JFrame {
 
     private void jtPessoasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtPessoasKeyTyped
         // TODO add your handling code here:
+    }//GEN-LAST:event_jtPessoasKeyTyped
+
+    private void jftfCPFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jftfCPFKeyTyped
+        // TODO add your handling code here:
         String num = "0123456789";
         if (!num.contains(evt.getKeyChar() + "")) {
             evt.consume();
         }
-    }//GEN-LAST:event_jtPessoasKeyTyped
+    }//GEN-LAST:event_jftfCPFKeyTyped
     
     public void limparCampos() {
         jtfNome.setText("");
