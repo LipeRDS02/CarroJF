@@ -573,10 +573,44 @@ public class JFCarro extends javax.swing.JFrame {
         jbDeletar.setVisible(false);
         jbSalvar.setText("Confirmar");
         jbLimpar.setText("Cancelar");
+        
+        int linha = jtCarros.getSelectedRow();
+        String placa = (String) jtCarros.getValueAt(linha, 2);
+        CarroServicos carroS = ServicosFactory.getCarroServicos();
+        Carro c = carroS.getCarroByDoc(placa);
+        jftfCPFP.setText(c.getProprietario().getCpf());
+        jftfPlaca.setText(c.getPlaca());
+        jftfAnoFab.setText(Integer.toString(c.getAnoFab()));
+        jftfAnoMod.setText(Integer.toString(c.getAnoMod()));
+        jtfCor.setText(c.getCor());
+        jtfMarca.setText(c.getMarca());
+        jtfModelo.setText(c.getModelo());
+        jcbCombustivel.setSelectedItem(c.getCombustivel());
+        if (c.getTpCambio().equalsIgnoreCase("Manual")) {
+            jrbManual.setSelected(true);
+        }else{
+            jrbAutomatico.setSelected(true);
+        }
     }//GEN-LAST:event_jbEditarActionPerformed
 
     private void jbDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbDeletarActionPerformed
         // TODO add your handling code here:
+         int linha = jtCarros.getSelectedRow();
+        String placa = (String) jtCarros.getValueAt(linha, 2);
+        CarroServicos carroS = ServicosFactory.getCarroServicos();
+        Object[] btnMSG = {"Sim", "Não"};
+        int resp = JOptionPane.showOptionDialog(this,
+                "Deseja realmente deletar " + placa, "DELETAR",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+                null, btnMSG, btnMSG[0]);
+        if (resp == 0) {
+            carroS.deletarCarro(placa);
+            addRowToTable();
+            JOptionPane.showMessageDialog(this, "Carro deletado com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Ok, delete cancelado pelo usuário!");
+        }
+        jbLimpar.doClick();
     }//GEN-LAST:event_jbDeletarActionPerformed
 
     private void jtCarrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtCarrosMouseClicked
@@ -595,30 +629,32 @@ public class JFCarro extends javax.swing.JFrame {
 
     private void jftfCPFPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfCPFPFocusLost
         // TODO add your handling code here:
-        PessoaServicos pessoaS = ServicosFactory.getPessoaServicos();
-        String cpf, nome;
-        cpf = jftfCPFP.getText();
-        nome = pessoaS.getPessoaByDoc(cpf).getNome();
-        if (nome == null) {
-            JOptionPane.showMessageDialog(this, "Pessoa não existe!");
-            jftfCPFP.requestFocus();
-        } else {
-            Object[] btnMSG = {"Sim", "Não"};
-            int resp = JOptionPane.showOptionDialog(this,
-                    "Este é o proprietário? " + nome, "PROPRIETÁRIO",
-                    JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
-                    null, btnMSG, btnMSG[0]);
-            if (resp == 0) {
-                jlProp.setText(nome);
-            } else {
+        if (!jftfCPFP.getText().equals("   .   .   -  ")) {
+            PessoaServicos pessoaS = ServicosFactory.getPessoaServicos();
+            String cpf, nome;
+            cpf = jftfCPFP.getText();
+            nome = pessoaS.getPessoaByDoc(cpf).getNome();
+            if (nome == null) {
+                JOptionPane.showMessageDialog(this, "Pessoa não existe!");
                 jftfCPFP.requestFocus();
-                jftfCPFP.setText("");
+            } else {
+                Object[] btnMSG = {"Sim", "Não"};
+                int resp = JOptionPane.showOptionDialog(this,
+                        "Este é o proprietário? " + nome, "PROPRIETÁRIO",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+                        null, btnMSG, btnMSG[0]);
+                if (resp == 0) {
+                    jlProp.setText(nome);
+                } else {
+                    jftfCPFP.requestFocus();
+                    jftfCPFP.setText("");
+                }
             }
         }
     }//GEN-LAST:event_jftfCPFPFocusLost
-    
+
     private static String bgCambio2;
-    
+
     private void jbSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarActionPerformed
         // TODO add your handling code here:
         if (validaInputs()) {
@@ -633,7 +669,7 @@ public class JFCarro extends javax.swing.JFrame {
             String cambio = bgCambio2.toUpperCase();
             String combustivel = jcbCombustivel.getSelectedItem().toString();
             Pessoa proprietario = pessoaS.getPessoaByDoc(jftfCPFP.getText());
-            Carro c = new Carro(placa, marca, modelo, anoFab, anoMod, cor, 
+            Carro c = new Carro(placa, marca, modelo, anoFab, anoMod, cor,
                     cambio, combustivel, proprietario);
             if (jbSalvar.getText().equals("Salvar")) {
                 carroS.cadastroCarro(c);
@@ -655,17 +691,17 @@ public class JFCarro extends javax.swing.JFrame {
 
     private void jftfAnoModFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jftfAnoModFocusLost
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jftfAnoModFocusLost
 
     private void jftfAnoModKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jftfAnoModKeyTyped
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jftfAnoModKeyTyped
 
     private void jftfAnoFabKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jftfAnoFabKeyTyped
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jftfAnoFabKeyTyped
 
     private void jrbManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbManualActionPerformed
